@@ -1,27 +1,17 @@
-use nannou::{color::WHITE, event::Update, geom::pt2, rand::random_f32, App, Draw, Frame};
-use rand::random;
+use nannou::{color::WHITE, event::Update, geom::pt2, rand::random_f32, App, Draw, Event, Frame};
+use nature_of_code::Exercise;
 
-const INTERNAL_WIDTH: u32 = 300;
-const INTERNAL_HEIGHT: u32 = 300;
-
-const WINDOW_WIDTH: u32 = INTERNAL_WIDTH * 2;
-const WINDOW_HEIGHT: u32 = INTERNAL_HEIGHT * 2;
+const EXERCISE: Exercise = Exercise::new(300, 300, 2);
 
 pub fn run() {
     nannou::app(model).update(update).run();
 }
 
 fn model(app: &App) -> Walker {
-    let _ = app
-        .new_window()
-        .size(WINDOW_WIDTH, WINDOW_HEIGHT)
-        .view(view)
-        .build()
-        .unwrap();
-
+    EXERCISE.init_with_view(app, view);
     Walker::new(
-        INTERNAL_WIDTH,
-        INTERNAL_HEIGHT,
+        EXERCISE.width(),
+        EXERCISE.height(),
         RightDownTendencyWalkerStrategy,
     )
 }
@@ -31,10 +21,7 @@ fn update(_app: &App, walker: &mut Walker, _update: Update) {
 }
 
 fn view(app: &App, walker: &Walker, frame: Frame) {
-    let draw = app.draw().scale_x(2.).scale_y(-2.).x_y(
-        -(INTERNAL_WIDTH as f32) / 2.,
-        -(INTERNAL_HEIGHT as f32) / 2.,
-    );
+    let draw = EXERCISE.draw(app);
 
     walker.show(&draw);
 

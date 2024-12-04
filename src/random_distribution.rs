@@ -4,24 +4,16 @@ use nannou::{
     rand::random_f32,
     App, Draw, Frame,
 };
+use nature_of_code::Exercise;
 
-const INTERNAL_WIDTH: u32 = 640;
-const INTERNAL_HEIGHT: u32 = 240;
-
-const WINDOW_WIDTH: u32 = INTERNAL_WIDTH * 2;
-const WINDOW_HEIGHT: u32 = INTERNAL_HEIGHT * 2;
+const EXERCISE: Exercise = Exercise::new(540, 240, 2);
 
 pub fn run() {
     nannou::app(model).update(update).run();
 }
 
 fn model(app: &App) -> Distribution {
-    let _ = app
-        .new_window()
-        .size(WINDOW_WIDTH, WINDOW_HEIGHT)
-        .view(view)
-        .build()
-        .unwrap();
+    EXERCISE.init_with_view(app, view);
 
     Distribution {
         total: 20,
@@ -34,10 +26,7 @@ fn update(_app: &App, model: &mut Distribution, _update: Update) {
 }
 
 fn view(app: &App, model: &Distribution, frame: Frame) {
-    let draw = app.draw().scale_x(2.).scale_y(-2.).x_y(
-        -(INTERNAL_WIDTH as f32) / 2.,
-        -(INTERNAL_HEIGHT as f32) / 2.,
-    );
+    let draw = EXERCISE.draw(app);
 
     model.show(&draw);
 
@@ -53,12 +42,12 @@ impl Distribution {
     pub fn show(&self, draw: &Draw) {
         draw.background().color(WHITE);
 
-        let width = INTERNAL_WIDTH as f32 / self.total as f32;
+        let width = EXERCISE.width() as f32 / self.total as f32;
 
         for (x, ele) in self.random_counts.iter().enumerate() {
             draw.rect()
                 .x(x as f32 * width + width / 2.)
-                .y(INTERNAL_HEIGHT as f32 - *ele as f32 / 2.)
+                .y(EXERCISE.height() as f32 - *ele as f32 / 2.)
                 .width(width - 1.)
                 .height(*ele as f32)
                 .stroke(BLACK)
