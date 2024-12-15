@@ -46,3 +46,12 @@ impl Exercise {
         self.scale
     }
 }
+
+pub fn map_range(value: f32, from_range: (f32, f32), to_range: (f32, f32)) -> f32 {
+    let from_min = from_range.0;
+    let from_max = from_range.1;
+    let to_min = to_range.0;
+    let to_max = to_range.1;
+
+    to_min + (value - from_min) * (to_max - to_min) / (from_max - from_min)
+}
