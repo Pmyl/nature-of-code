@@ -15,7 +15,8 @@ fn model(app: &App) -> State {
     State {
         width: EXERCISE.width(),
         height: EXERCISE.height(),
-        noise: Perlin::new()
+        noise: Perlin::new(),
+        frames: 0,
     }
 }
 
@@ -34,13 +35,14 @@ struct State {
     width: u32,
     height: u32,
     noise: Perlin,
+    frames: usize,
 }
 
 impl State {
     pub fn show(&self, draw: &Draw) {
         for x in 0..self.width {
             for y in 0..self.height {
-                let noise = self.noise.get([x as f64 / 10.0, y as f64 / 10.0]);
+                let noise = self.noise.get([x as f64 / 100.0 + self.frames as f64 / 10., y as f64 / 100.0 - self.frames as f64 / 10.]);
                 let mapped_noise = map_range(noise as f32, (-1., 1.), (0., 1.));
 
                 draw.line()
@@ -54,6 +56,6 @@ impl State {
     }
 
     pub fn step(&mut self) {
-        //
+        self.frames += 1;
     }
 }
