@@ -96,6 +96,7 @@ impl WalkerStrategy for UniformWalkerStrategy {
     }
 }
 
+#[allow(dead_code)]
 struct RightDownTendencyWalkerStrategy;
 impl WalkerStrategy for RightDownTendencyWalkerStrategy {
     fn step(&self, _: &(f32, f32), _: &(f32, f32)) -> (f32, f32) {
@@ -109,6 +110,7 @@ impl WalkerStrategy for RightDownTendencyWalkerStrategy {
     }
 }
 
+#[allow(dead_code)]
 struct RightTendencyWalkerStrategy;
 impl WalkerStrategy for RightTendencyWalkerStrategy {
     fn step(&self, _: &(f32, f32), _: &(f32, f32)) -> (f32, f32) {
