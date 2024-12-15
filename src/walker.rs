@@ -1,6 +1,8 @@
 use nannou::event::WindowEvent;
+use nannou::prelude::Pow;
 use nannou::{color::WHITE, event::Update, geom::pt2, rand::random_f32, App, Draw, Event, Frame};
 use nature_of_code::Exercise;
+use rand::{thread_rng, Rng};
 
 const EXERCISE: Exercise = Exercise::new(300, 300, 2);
 
@@ -31,9 +33,7 @@ fn model(app: &App) -> Walker {
     Walker::new(
         EXERCISE.width(),
         EXERCISE.height(),
-        MouseTendencyWalkerStrategy {
-            fallback: UniformWalkerStrategy,
-        },
+        AcceptRejectSquaredWalkerStrategy,
     )
 }
 
@@ -86,6 +86,7 @@ trait WalkerStrategy {
     fn step(&self, mouse_position: &(f32, f32), position: &(f32, f32)) -> (f32, f32);
 }
 
+#[allow(dead_code)]
 struct UniformWalkerStrategy;
 impl WalkerStrategy for UniformWalkerStrategy {
     fn step(&self, _: &(f32, f32), _: &(f32, f32)) -> (f32, f32) {
@@ -128,6 +129,7 @@ impl WalkerStrategy for RightTendencyWalkerStrategy {
     }
 }
 
+#[allow(dead_code)]
 struct MouseTendencyWalkerStrategy<T> {
     fallback: T,
 }
@@ -156,5 +158,52 @@ impl<T: WalkerStrategy> WalkerStrategy for MouseTendencyWalkerStrategy<T> {
 
             (xmovement, ymovement)
         }
+    }
+}
+
+#[allow(dead_code)]
+struct LevyFlightWalkerStrategy;
+impl WalkerStrategy for LevyFlightWalkerStrategy {
+    fn step(&self, _: &(f32, f32), _: &(f32, f32)) -> (f32, f32) {
+        let mut rng = rand::thread_rng();
+
+        if rng.gen::<f32>() < 0.01 {
+            let xstep = rng.gen_range(-100.0..=100.0);
+            let ystep = rng.gen_range(-100.0..=100.0);
+
+            (xstep, ystep)
+        } else {
+            let xstep = rng.gen_range(-1.0..=1.0);
+            let ystep = rng.gen_range(-1.0..=1.0);
+
+            (xstep, ystep)
+        }
+    }
+}
+
+#[allow(dead_code)]
+struct AcceptRejectSquaredWalkerStrategy;
+impl WalkerStrategy for AcceptRejectSquaredWalkerStrategy {
+    fn step(&self, _: &(f32, f32), _: &(f32, f32)) -> (f32, f32) {
+        let step = 10.0;
+
+        fn accept_reject(step: f32) -> f32 {
+            let mut rng = thread_rng();
+
+            loop {
+                let direction_step = rng.gen_range(-step..=step);
+                let qualifying_random = rng.gen_range(-(step.pow(2.0))..=step.pow(2.0));
+                let p = direction_step.pow(2.0);
+
+                if qualifying_random < p {
+                    return direction_step;
+                }
+            }
+        }
+
+        let xstep = accept_reject(step);
+        let ystep = accept_reject(step);
+
+        (xstep, ystep)
     }
 }

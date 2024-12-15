@@ -5,6 +5,7 @@ use nannou::{
     App, Draw, Frame,
 };
 use nature_of_code::Exercise;
+use rand::{thread_rng, Rng};
 
 const EXERCISE: Exercise = Exercise::new(540, 240, 2);
 
@@ -57,7 +58,25 @@ impl Distribution {
     }
 
     pub fn step(&mut self) {
-        let index = f32::floor(random_f32() * self.total as f32) as usize;
-        self.random_counts[index] += 1;
+        accept_reject_distribution(self.total, &mut self.random_counts);
+    }
+}
+
+#[allow(dead_code)]
+fn uniform_distribution(total: u32, random_counts: &mut Vec<u32>) {
+    let index = f32::floor(random_f32() * total as f32) as usize;
+    random_counts[index] += 1;
+}
+
+#[allow(dead_code)]
+fn accept_reject_distribution(total: u32, random_counts: &mut Vec<u32>) {
+    loop {
+        let random = thread_rng().gen_range(0..total);
+        let qualifying_random = thread_rng().gen_range(0..total);
+
+        if qualifying_random < random {
+            random_counts[random as usize] += 1;
+            break;
+        }
     }
 }
