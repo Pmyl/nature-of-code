@@ -17,7 +17,7 @@ fn model(app: &App) {
 fn view(app: &App, _: &(), frame: Frame) {
     let draw = EXERCISE.draw(app);
 
-    let mut normal = Normal::new(0., 1.).unwrap();
+    let normal = Normal::new(0., 1.).unwrap();
 
     let x: f32 = normal.sample(&mut rand::thread_rng()) * 60. + 320.;
     let y: f32 = normal.sample(&mut rand::thread_rng()) * 60. + 150.;
@@ -25,7 +25,6 @@ fn view(app: &App, _: &(), frame: Frame) {
     let r: f32 = normal.sample(&mut rand::thread_rng()) * 0.1 + 0.5;
     let g: f32 = normal.sample(&mut rand::thread_rng()) * 0.1 + 0.5;
     let b: f32 = normal.sample(&mut rand::thread_rng()) * 0.1 + 0.5;
-
 
     draw.ellipse()
         .color(Rgba::new(r, g, b, 0.1))
