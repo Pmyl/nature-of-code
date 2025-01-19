@@ -6,5 +6,5 @@ pub mod vectors;
 pub mod walker;
 
 fn main() {
-    car_acceleration::run();
+    vectors::run();
 }

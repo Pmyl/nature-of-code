@@ -1,6 +1,9 @@
+use nannou::noise::NoiseFn;
 use nannou::color::BLACK;
 use nannou::geom::{pt2, Point2};
 use nannou::{event::Update, App, Draw, Frame};
+use nannou::noise::Perlin;
+use rand::{thread_rng, Rng};
 use nature_of_code::Exercise;
 
 const EXERCISE: Exercise = Exercise::new(640, 240, 2);
@@ -14,7 +17,9 @@ fn model(app: &App) -> State {
     State {
         position: pt2(100., 100.),
         velocity: pt2(2.5, 2.),
-        acceleration: pt2(-0.001, 0.01)
+        acceleration: pt2(-0.001, 0.01),
+        noise: Perlin::new(),
+        frames: 0,
     }
 }
 
@@ -33,6 +38,8 @@ struct State {
     position: Point2,
     velocity: Point2,
     acceleration: Point2,
+    noise: Perlin,
+    frames: usize,
 }
 
 impl State {
@@ -42,6 +49,8 @@ impl State {
     }
 
     pub fn step(&mut self) {
+        self.frames += 1;
+        self.acceleration = Point2::new(self.noise.get([self.frames as f64 / 10., 0.]) as f32, self.noise.get([0., self.frames as f64 / 10.]) as f32);
         self.velocity += self.acceleration;
         self.velocity = self.velocity.clamp_length(0., 10.);
         self.position += self.velocity;
@@ -56,4 +65,10 @@ impl State {
             self.acceleration.y *= -1.;
         }
     }
+}
+
+fn random_vec() -> Point2 {
+    let x = thread_rng().gen::<f32>() - 0.5;
+    let y = thread_rng().gen::<f32>() - 0.5;
+    Point2::new(x, y).normalize()
 }
