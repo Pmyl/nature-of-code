@@ -4,7 +4,8 @@ pub mod random_distribution;
 pub mod show_noise;
 pub mod vectors;
 pub mod walker;
+pub mod vectors_mouse;
 
 fn main() {
-    vectors::run();
+    vectors_mouse::run();
 }
