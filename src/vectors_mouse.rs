@@ -1,11 +1,7 @@
-use std::ops::Sub;
-use nannou::noise::NoiseFn;
 use nannou::color::BLACK;
+use nannou::event::WindowEvent;
 use nannou::geom::{pt2, Point2};
 use nannou::{event::Update, App, Draw, Event, Frame};
-use nannou::event::WindowEvent;
-use nannou::noise::Perlin;
-use rand::{thread_rng, Rng};
 use nature_of_code::Exercise;
 
 const EXERCISE: Exercise = Exercise::new(640, 240, 2);
@@ -20,7 +16,7 @@ fn model(app: &App) -> State {
         position: pt2(100., 100.),
         velocity: pt2(2.5, 2.),
         acceleration: pt2(-0.001, 0.01),
-        mouse_position: Point2::ZERO
+        mouse_position: Point2::ZERO,
     }
 }
 
@@ -57,7 +53,7 @@ struct State {
     position: Point2,
     velocity: Point2,
     acceleration: Point2,
-    mouse_position: Point2
+    mouse_position: Point2,
 }
 
 impl State {
