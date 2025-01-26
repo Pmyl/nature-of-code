@@ -1,11 +1,6 @@
-pub mod car_acceleration;
-pub mod gaussian_circles;
-pub mod random_distribution;
-pub mod show_noise;
-pub mod vectors;
-pub mod walker;
-pub mod vectors_mouse;
+pub mod ch0_1;
+pub mod ch2;
 
 fn main() {
-    vectors_mouse::run();
+    ch2::example2_3invisible_forces::run();
 }

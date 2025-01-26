@@ -1,3 +1,5 @@
+pub mod utils;
+
 use nannou::{app::ViewFn, App, Draw};
 
 pub struct Exercise {
