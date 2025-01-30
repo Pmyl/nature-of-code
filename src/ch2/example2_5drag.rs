@@ -91,6 +91,9 @@ impl State {
     }
 
     pub fn step_mover(liquid: &Liquid, mover: &mut Mover) {
+        if liquid.contains(mover) {
+            liquid.apply_drag_to(mover)
+        }
         let gravity = Gravity(pt2(0., 0.1));
         gravity.apply_to(mover);
 
