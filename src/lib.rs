@@ -1,6 +1,8 @@
 pub mod utils;
 
 use nannou::{app::ViewFn, App, Draw};
+use nannou::geom::Point2;
+use nannou::prelude::pt2;
 
 pub struct Exercise {
     width: u32,
@@ -15,6 +17,9 @@ impl Exercise {
             height,
             scale,
         }
+    }
+    pub fn size(&self) -> Point2 {
+        pt2(self.width as f32, self.height as f32)
     }
 
     pub fn init_with_view<Model: 'static>(&self, app: &App, view: ViewFn<Model>) {

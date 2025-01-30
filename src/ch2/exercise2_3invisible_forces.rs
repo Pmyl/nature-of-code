@@ -14,16 +14,8 @@ fn model(app: &App) -> State {
     EXERCISE.init_with_view(app, view);
     State {
         movers: vec![
-            Mover {
-                position: pt2(100., 30.),
-                mass: 10.,
-                ..Default::default()
-            },
-            Mover {
-                position: pt2(400., 30.),
-                mass: 2.,
-                ..Default::default()
-            },
+            Mover::new_simple(pt2(100., 30.), 10.),
+            Mover::new_simple(pt2(400., 30.), 2.),
         ],
     }
 }
@@ -49,8 +41,7 @@ impl State {
 
         for mover in &self.movers {
             draw.ellipse()
-                .width(mover.mass * 16.)
-                .height(mover.mass * 16.)
+                .wh(mover.size)
                 .xy(mover.position);
         }
     }

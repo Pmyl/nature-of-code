@@ -14,11 +14,7 @@ pub fn run() {
 fn model(app: &App) -> State {
     EXERCISE.init_with_view(app, view);
     State {
-        mover: Mover {
-            position: pt2(300., 240.),
-            mass: 10.,
-            ..Default::default()
-        },
+        mover: Mover::new(pt2(200., 240.), 10., pt2(20., 26.)),
         noise: Perlin::new(),
         frames: 0,
     }
@@ -45,8 +41,7 @@ impl State {
     pub fn show(&self, draw: &Draw) {
         draw.background().color(BLACK);
         draw.ellipse()
-            .width(20.)
-            .height(26.)
+            .wh(self.mover.size)
             .xy(self.mover.position);
     }
 

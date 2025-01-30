@@ -33,7 +33,8 @@ fn event(_app: &App, state: &mut State, event: Event) {
 fn model(app: &App) -> State {
     EXERCISE.init_with_view(app, view);
     State {
-        mover: Mover::new(pt2(300., 120.), 1., pt2(32., 32.)),
+        mover1: Mover::new_simple(pt2(100., 30.), 10.),
+        mover2: Mover::new_simple(pt2(400., 30.), 2.),
         mouse_pressed: false,
     }
 }
@@ -50,34 +51,38 @@ fn view(app: &App, state: &State, frame: Frame) {
 }
 
 struct State {
-    mover: Mover,
+    mover1: Mover,
+    mover2: Mover,
     mouse_pressed: bool,
 }
 
 impl State {
     pub fn show(&self, draw: &Draw) {
         draw.background().color(BLACK);
+
         draw.ellipse()
-            .wh(self.mover.size)
-            .xy(self.mover.position);
+            .wh(self.mover1.size)
+            .xy(self.mover1.position);
+
+        draw.ellipse()
+            .wh(self.mover2.size)
+            .xy(self.mover2.position);
     }
 
     pub fn step(&mut self) {
-        if self.mouse_pressed {
+        Self::step_mover(self.mouse_pressed, &mut self.mover1);
+        Self::step_mover(self.mouse_pressed, &mut self.mover2);
+    }
+
+    pub fn step_mover(mouse_pressed: bool, mover: &mut Mover) {
+        if mouse_pressed {
             let wind_force = pt2(0.1, 0.);
-            self.mover.apply_force(wind_force);
+            mover.apply_force(wind_force);
         }
 
-        let gravity_force = pt2(0., 0.1);
-        self.mover.apply_force(gravity_force);
-        self.mover.update();
-
-        if self.mover.position.y <= 0. || self.mover.position.y >= EXERCISE.height() as f32 {
-            self.mover.velocity.y *= -1.;
-        }
-
-        if self.mover.position.x <= 0. || self.mover.position.x >= EXERCISE.width() as f32 {
-            self.mover.velocity.x *= -1.;
-        }
+        let gravity_force = pt2(0., 0.1) * mover.mass;
+        mover.apply_force(gravity_force);
+        mover.update();
+        mover.bounce_edges(EXERCISE.size(), 1.);
     }
 }

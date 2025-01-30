@@ -33,16 +33,8 @@ fn event(_app: &App, state: &mut State, event: Event) {
 fn model(app: &App) -> State {
     EXERCISE.init_with_view(app, view);
     State {
-        mover1: Mover {
-            position: pt2(100., 30.),
-            mass: 10.,
-            ..Default::default()
-        },
-        mover2: Mover {
-            position: pt2(400., 30.),
-            mass: 2.,
-            ..Default::default()
-        },
+        mover1: Mover::new_simple(pt2(100., 30.), 10.),
+        mover2: Mover::new_simple(pt2(400., 30.), 2.),
         mouse_pressed: false,
     }
 }
@@ -69,13 +61,11 @@ impl State {
         draw.background().color(BLACK);
 
         draw.ellipse()
-            .width(self.mover1.mass * 16.)
-            .height(self.mover1.mass * 16.)
+            .wh(self.mover1.size)
             .xy(self.mover1.position);
 
         draw.ellipse()
-            .width(self.mover2.mass * 16.)
-            .height(self.mover2.mass * 16.)
+            .wh(self.mover2.size)
             .xy(self.mover2.position);
     }
 

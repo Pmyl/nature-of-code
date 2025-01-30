@@ -1,4 +1,4 @@
-use nannou::geom::Point2;
+use nannou::geom::{pt2, Point2};
 
 #[derive(Default)]
 pub struct Mover {
@@ -6,15 +6,32 @@ pub struct Mover {
     pub velocity: Point2,
     pub acceleration: Point2,
     pub mass: f32,
+    pub size: Point2,
 }
 
 impl Mover {
+    pub fn new_simple(position: Point2, mass: f32) -> Self {
+        Mover {
+            position,
+            velocity: Point2::ZERO,
+            acceleration: Point2::ZERO,
+            mass,
+            size: pt2(16., 16.) * mass,
+        }
+    }
+    pub fn new(position: Point2, mass: f32, size: Point2) -> Self {
+        Mover {
+            position,
+            velocity: Point2::ZERO,
+            acceleration: Point2::ZERO,
+            mass,
+            size,
+        }
+    }
     pub fn update(&mut self) {
         self.velocity += self.acceleration;
         self.position += self.velocity;
         self.acceleration = Point2::ZERO;
-
-        self.check_edges();
     }
 
     pub fn apply_force(&mut self, force: Point2) {
@@ -22,15 +39,25 @@ impl Mover {
         self.acceleration += f;
     }
 
-    fn check_edges(&mut self) {
-        // if self.position.x < 0. || self.position.x > EXERCISE.width() as f32 {
-        //     self.velocity.x *= -1.;
-        //     self.acceleration.x *= -1.;
-        // }
+    pub fn bounce_edges(&mut self, size: Point2, bounciness: f32) {
+        if self.position.y - self.size.y / 2. <= 0. {
+            self.velocity.y *= -bounciness;
+            self.position.y = self.size.y / 2.;
+        }
 
-        // if self.position.y < 0. || self.position.y > EXERCISE.height() as f32 {
-        //     self.velocity.y *= -1.;
-        //     self.acceleration.y *= -1.;
-        // }
+        if self.position.x - self.size.x / 2. <= 0. {
+            self.velocity.x *= -bounciness;
+            self.position.x = self.size.x / 2.;
+        }
+
+        if self.position.y + self.size.y / 2. >= size.y {
+            self.velocity.y *= -bounciness;
+            self.position.y = size.y - self.size.y / 2.;
+        }
+
+        if self.position.x + self.size.x / 2. >= size.x {
+            self.velocity.x *= -bounciness;
+            self.position.x = size.x - self.size.x / 2.;
+        }
     }
 }
