@@ -1,15 +1,14 @@
-use std::array;
-use nannou::color::{BLACK, GREY, PINK};
+use nannou::color::{BLACK, GREY};
 use nannou::event::WindowEvent;
 use nannou::geom::pt2;
 use nannou::Event;
 use nannou::{event::Update, App, Draw, Frame};
-use rand::{thread_rng, Rng};
-use nature_of_code::utils::mover::Mover;
-use nature_of_code::Exercise;
-use nature_of_code::utils::friction::Friction;
 use nature_of_code::utils::gravity::Gravity;
 use nature_of_code::utils::liquid::Liquid;
+use nature_of_code::utils::mover::Mover;
+use nature_of_code::Exercise;
+use rand::{thread_rng, Rng};
+use std::array;
 
 const EXERCISE: Exercise = Exercise::new(640, 240, 2);
 
@@ -97,11 +96,8 @@ impl State {
         let gravity = Gravity(pt2(0., 0.1));
         gravity.apply_to(mover);
 
-        if mover.contact_edges(EXERCISE.size()) {
-            Friction(0.1).apply_to(mover);
-        }
+        mover.update();
 
         mover.bounce_edges(EXERCISE.size(), 0.9);
-        mover.update();
     }
 }
