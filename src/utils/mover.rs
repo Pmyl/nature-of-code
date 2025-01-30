@@ -60,4 +60,24 @@ impl Mover {
             self.position.x = size.x - self.size.x / 2.;
         }
     }
+
+    pub fn contact_edges(&mut self, size: Point2) -> bool {
+        if self.position.y - self.size.y / 2. < 0. {
+          return true;
+        }
+
+        if self.position.x - self.size.x / 2. < 0. {
+          return true;
+        }
+
+        if self.position.y > size.y - self.size.y / 2. {
+          return true;
+        }
+
+        if self.position.x  > size.x - self.size.x / 2. {
+          return true;
+        }
+
+        false
+    }
 }

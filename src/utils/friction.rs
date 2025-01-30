@@ -1,10 +1,11 @@
 use super::mover::Mover;
 
-pub struct Friction;
+pub struct Friction(pub f32);
 
 impl Friction {
-    pub fn apply(mover: &mut Mover) {
-        // TODO: implement and use this
-        // apply friction
+    pub fn apply_to(self, mover: &mut Mover) {
+        let friction = (mover.velocity * -1.).normalize() * self.0;
+
+        mover.apply_force(friction);
     }
 }
