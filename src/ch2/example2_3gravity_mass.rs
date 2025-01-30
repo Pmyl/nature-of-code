@@ -5,6 +5,7 @@ use nannou::Event;
 use nannou::{event::Update, App, Draw, Frame};
 use nature_of_code::utils::mover::Mover;
 use nature_of_code::Exercise;
+use nature_of_code::utils::gravity::Gravity;
 
 const EXERCISE: Exercise = Exercise::new(640, 240, 2);
 
@@ -80,8 +81,8 @@ impl State {
             mover.apply_force(wind_force);
         }
 
-        let gravity_force = pt2(0., 0.1) * mover.mass;
-        mover.apply_force(gravity_force);
+        let gravity = Gravity(pt2(0., 0.1));
+        gravity.apply_to(mover);
         mover.update();
         mover.bounce_edges(EXERCISE.size(), 1.);
     }

@@ -40,22 +40,22 @@ impl Mover {
     }
 
     pub fn bounce_edges(&mut self, size: Point2, bounciness: f32) {
-        if self.position.y - self.size.y / 2. <= 0. {
+        if self.position.y - self.size.y / 2. < 0. {
             self.velocity.y *= -bounciness;
             self.position.y = self.size.y / 2.;
         }
 
-        if self.position.x - self.size.x / 2. <= 0. {
+        if self.position.x - self.size.x / 2. < 0. {
             self.velocity.x *= -bounciness;
             self.position.x = self.size.x / 2.;
         }
 
-        if self.position.y + self.size.y / 2. >= size.y {
+        if self.position.y > size.y - self.size.y / 2. {
             self.velocity.y *= -bounciness;
             self.position.y = size.y - self.size.y / 2.;
         }
 
-        if self.position.x + self.size.x / 2. >= size.x {
+        if self.position.x  > size.x - self.size.x / 2. {
             self.velocity.x *= -bounciness;
             self.position.x = size.x - self.size.x / 2.;
         }
