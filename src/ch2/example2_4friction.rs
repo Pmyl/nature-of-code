@@ -3,12 +3,12 @@ use nannou::event::WindowEvent;
 use nannou::geom::pt2;
 use nannou::Event;
 use nannou::{event::Update, App, Draw, Frame};
-use nature_of_code::utils::mover::Mover;
-use nature_of_code::Exercise;
 use nature_of_code::utils::friction::Friction;
 use nature_of_code::utils::gravity::Gravity;
+use nature_of_code::utils::mover::Mover;
+use nature_of_code::ExerciseData;
 
-const EXERCISE: Exercise = Exercise::new(640, 240, 2);
+const EXERCISE: ExerciseData = ExerciseData::new(640, 240, 2);
 
 pub fn run() {
     nannou::app(model).update(update).event(event).run();
@@ -60,9 +60,7 @@ impl State {
     pub fn show(&self, draw: &Draw) {
         draw.background().color(BLACK);
 
-        draw.ellipse()
-            .wh(self.mover.size)
-            .xy(self.mover.position);
+        draw.ellipse().wh(self.mover.size).xy(self.mover.position);
     }
 
     pub fn step(&mut self) {

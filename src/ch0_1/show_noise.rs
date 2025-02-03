@@ -1,34 +1,11 @@
 use nannou::color::Rgba;
 use nannou::geom::pt2;
 use nannou::noise::{NoiseFn, Perlin};
-use nannou::{event::Update, App, Draw, Frame};
-use nature_of_code::{map_range, Exercise};
-
-const EXERCISE: Exercise = Exercise::new(400, 400, 2);
+use nannou::Draw;
+use nature_of_code::{map_range, ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
-    nannou::app(model).update(update).run();
-}
-
-fn model(app: &App) -> State {
-    EXERCISE.init_with_view(app, view);
-    State {
-        width: EXERCISE.width(),
-        height: EXERCISE.height(),
-        noise: Perlin::new(),
-        frames: 0,
-    }
-}
-
-fn update(_app: &App, walker: &mut State, _update: Update) {
-    walker.step();
-}
-
-fn view(app: &App, walker: &State, frame: Frame) {
-    let draw = EXERCISE.draw(app);
-    walker.show(&draw);
-
-    draw.to_frame(app, &frame).unwrap()
+    ExerciseRunner::run::<State>(ExerciseData::new(400, 400, 2));
 }
 
 struct State {
@@ -38,11 +15,23 @@ struct State {
     frames: usize,
 }
 
-impl State {
-    pub fn show(&self, draw: &Draw) {
+impl ExerciseState for State {
+    fn new(exercise: &ExerciseData) -> Self {
+        State {
+            width: exercise.width(),
+            height: exercise.height(),
+            noise: Perlin::new(),
+            frames: 0,
+        }
+    }
+
+    fn show(&self, draw: &Draw, _: &ExerciseData) {
         for x in 0..self.width {
             for y in 0..self.height {
-                let noise = self.noise.get([x as f64 / 100.0 + self.frames as f64 / 10., y as f64 / 100.0 - self.frames as f64 / 10.]);
+                let noise = self.noise.get([
+                    x as f64 / 100.0 + self.frames as f64 / 10.,
+                    y as f64 / 100.0 - self.frames as f64 / 10.,
+                ]);
                 let mapped_noise = map_range(noise as f32, (-1., 1.), (0., 1.));
 
                 draw.line()
@@ -55,7 +44,7 @@ impl State {
         }
     }
 
-    pub fn step(&mut self) {
+    fn step(&mut self, _: &ExerciseData) {
         self.frames += 1;
     }
 }

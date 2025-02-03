@@ -1,55 +1,12 @@
 use nannou::event::WindowEvent;
 use nannou::noise::{NoiseFn, OpenSimplex, Seedable};
 use nannou::prelude::Pow;
-use nannou::{color::WHITE, event::Update, geom::pt2, rand::random_f32, App, Draw, Event, Frame};
-use nature_of_code::{map_range, Exercise};
+use nannou::{color::WHITE, geom::pt2, rand::random_f32, Draw, Event};
+use nature_of_code::{map_range, ExerciseData, ExerciseRunner, ExerciseState};
 use rand::{thread_rng, Rng};
 
-const EXERCISE: Exercise = Exercise::new(300, 300, 2);
-
 pub fn run() {
-    nannou::app(model).update(update).event(event).run();
-}
-
-fn event(_app: &App, walker: &mut Walker, event: Event) {
-    match event {
-        Event::WindowEvent {
-            simple: Some(wevent),
-            ..
-        } => match wevent {
-            WindowEvent::MouseMoved(mouse) => {
-                walker.context.mouse_position = (
-                    mouse.x / EXERCISE.scale() as f32 + (EXERCISE.width() / 2) as f32,
-                    -mouse.y / EXERCISE.scale() as f32 + (EXERCISE.height() / 2) as f32,
-                )
-            }
-            _ => {}
-        },
-        _ => {}
-    }
-}
-
-fn model(app: &App) -> Walker {
-    EXERCISE.init_with_view(app, view);
-    Walker::new(
-        EXERCISE.width(),
-        EXERCISE.height(),
-        NoiseWalkerStrategy {
-            noise: OpenSimplex::new().set_seed(987654),
-        },
-    )
-}
-
-fn update(_app: &App, walker: &mut Walker, _update: Update) {
-    walker.step();
-}
-
-fn view(app: &App, walker: &Walker, frame: Frame) {
-    let draw = EXERCISE.draw(app);
-
-    walker.show(&draw);
-
-    draw.to_frame(app, &frame).unwrap()
+    ExerciseRunner::run::<Walker>(ExerciseData::new(300, 300, 2));
 }
 
 struct Walker {
@@ -63,19 +20,21 @@ struct Context {
     mouse_position: (f32, f32),
 }
 
-impl Walker {
-    pub fn new(width: u32, height: u32, strategy: impl WalkerStrategy + 'static) -> Self {
+impl ExerciseState for Walker {
+    fn new(exercise: &ExerciseData) -> Self {
         Self {
-            step_strategy: Box::new(strategy),
+            step_strategy: Box::new(NoiseWalkerStrategy {
+                noise: OpenSimplex::new().set_seed(987654),
+            }),
             context: Context {
                 frames: 0,
-                position: (width as f32 / 2., height as f32 / 2.),
+                position: (exercise.width() as f32 / 2., exercise.height() as f32 / 2.),
                 mouse_position: (0., 0.),
             },
         }
     }
 
-    pub fn show(&self, draw: &Draw) {
+    fn show(&self, draw: &Draw, _: &ExerciseData) {
         draw.line()
             .x(self.context.position.0)
             .y(self.context.position.1)
@@ -84,11 +43,29 @@ impl Walker {
             .points(pt2(0., 0.), pt2(0., 1.));
     }
 
-    pub fn step(&mut self) {
+    fn step(&mut self, _: &ExerciseData) {
         let (x, y) = self.step_strategy.step(&self.context);
         self.context.position.0 += x;
         self.context.position.1 += y;
         self.context.frames += 1;
+    }
+
+    fn handle_event(&mut self, event: Event, exercise: &ExerciseData) {
+        match event {
+            Event::WindowEvent {
+                simple: Some(wevent),
+                ..
+            } => match wevent {
+                WindowEvent::MouseMoved(mouse) => {
+                    self.context.mouse_position = (
+                        mouse.x / exercise.scale() as f32 + (exercise.width() / 2) as f32,
+                        -mouse.y / exercise.scale() as f32 + (exercise.height() / 2) as f32,
+                    )
+                }
+                _ => {}
+            },
+            _ => {}
+        }
     }
 }
 

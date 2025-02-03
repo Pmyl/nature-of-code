@@ -1,34 +1,12 @@
 use nannou::color::BLACK;
 use nannou::geom::{pt2, Point2};
 use nannou::noise::{NoiseFn, Perlin};
-use nannou::{event::Update, App, Draw, Frame};
+use nannou::Draw;
 use nature_of_code::utils::mover::Mover;
-use nature_of_code::Exercise;
-
-const EXERCISE: Exercise = Exercise::new(640, 240, 2);
+use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
-    nannou::app(model).update(update).run();
-}
-
-fn model(app: &App) -> State {
-    EXERCISE.init_with_view(app, view);
-    State {
-        mover: Mover::new(pt2(200., 240.), 10., pt2(20., 26.)),
-        noise: Perlin::new(),
-        frames: 0,
-    }
-}
-
-fn update(_app: &App, state: &mut State, _update: Update) {
-    state.step();
-}
-
-fn view(app: &App, state: &State, frame: Frame) {
-    let draw = EXERCISE.draw(app);
-    state.show(&draw);
-
-    draw.to_frame(app, &frame).unwrap()
+    ExerciseRunner::run::<State>(ExerciseData::new(640, 240, 2));
 }
 
 struct State {
@@ -37,15 +15,21 @@ struct State {
     frames: usize,
 }
 
-impl State {
-    pub fn show(&self, draw: &Draw) {
-        draw.background().color(BLACK);
-        draw.ellipse()
-            .wh(self.mover.size)
-            .xy(self.mover.position);
+impl ExerciseState for State {
+    fn new(_: &ExerciseData) -> Self {
+        State {
+            mover: Mover::new(pt2(200., 240.), 10., pt2(20., 26.)),
+            noise: Perlin::new(),
+            frames: 0,
+        }
     }
 
-    pub fn step(&mut self) {
+    fn show(&self, draw: &Draw, _: &ExerciseData) {
+        draw.background().color(BLACK);
+        draw.ellipse().wh(self.mover.size).xy(self.mover.position);
+    }
+
+    fn step(&mut self, exercise: &ExerciseData) {
         self.frames += 1;
         let wind_force = Point2::new(
             self.noise.get([self.frames as f64 / 100., 0.]) as f32,
@@ -60,7 +44,7 @@ impl State {
             self.mover.velocity.y *= -0.3;
         }
 
-        if self.mover.position.x <= 0. || self.mover.position.x >= EXERCISE.width() as f32 {
+        if self.mover.position.x <= 0. || self.mover.position.x >= exercise.width() as f32 {
             self.mover.velocity.x *= -0.3;
         }
     }
