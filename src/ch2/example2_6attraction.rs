@@ -11,16 +11,16 @@ pub fn run() {
 
 struct State {
     movers: Vec<Mover>,
-    attractor: Mover
+    attractor: Mover,
 }
 
 impl ExerciseState for State {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData) -> Self {
         State {
             movers: [Mover::new_simple(pt2(320., 80.), 3.)]
-            .into_iter()
-            .collect::<Vec<_>>(),
-            attractor: Mover::new_simple(pt2(320., 120.), 5.)
+                .into_iter()
+                .collect::<Vec<_>>(),
+            attractor: Mover::new_simple(pt2(320., 120.), 5.),
         }
     }
 
@@ -31,7 +31,9 @@ impl ExerciseState for State {
             draw.ellipse().wh(mover.size).xy(mover.position);
         }
 
-        draw.ellipse().wh(self.attractor.size).xy(self.attractor.position);
+        draw.ellipse()
+            .wh(self.attractor.size)
+            .xy(self.attractor.position);
     }
 
     fn step(&mut self, exercise: &ExerciseData) {
