@@ -4,7 +4,7 @@ use nannou::geom::pt2;
 use nannou::{Draw, Event};
 use nature_of_code::utils::friction::Friction;
 use nature_of_code::utils::gravity::Gravity;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -12,14 +12,14 @@ pub fn run() {
 }
 
 struct State {
-    mover: Mover,
+    mover: Body,
     mouse_pressed: bool,
 }
 
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
-            mover: Mover::new_simple(pt2(320., 100.), 5.),
+            mover: Body::new_simple(pt2(320., 100.), 5.),
             mouse_pressed: false,
         }
     }

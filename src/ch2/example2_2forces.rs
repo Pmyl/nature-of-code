@@ -3,7 +3,7 @@ use nannou::event::WindowEvent;
 use nannou::geom::pt2;
 use nannou::Draw;
 use nannou::Event;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -11,16 +11,16 @@ pub fn run() {
 }
 
 struct State {
-    mover1: Mover,
-    mover2: Mover,
+    mover1: Body,
+    mover2: Body,
     mouse_pressed: bool,
 }
 
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
-            mover1: Mover::new_simple(pt2(100., 30.), 10.),
-            mover2: Mover::new_simple(pt2(400., 30.), 2.),
+            mover1: Body::new_simple(pt2(100., 30.), 10.),
+            mover2: Body::new_simple(pt2(400., 30.), 2.),
             mouse_pressed: false,
         }
     }
@@ -55,7 +55,7 @@ impl ExerciseState for State {
     }
 }
 
-fn step_mover(mouse_pressed: bool, mover: &mut Mover, exercise: &ExerciseData) {
+fn step_mover(mouse_pressed: bool, mover: &mut Body, exercise: &ExerciseData) {
     if mouse_pressed {
         let wind_force = pt2(0.1, 0.);
         mover.apply_force(wind_force);

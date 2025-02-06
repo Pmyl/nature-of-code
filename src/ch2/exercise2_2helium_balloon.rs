@@ -2,7 +2,7 @@ use nannou::color::BLACK;
 use nannou::geom::{pt2, Point2};
 use nannou::noise::{NoiseFn, Perlin};
 use nannou::Draw;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -10,7 +10,7 @@ pub fn run() {
 }
 
 struct State {
-    mover: Mover,
+    mover: Body,
     noise: Perlin,
     frames: usize,
 }
@@ -18,7 +18,7 @@ struct State {
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
-            mover: Mover::new(pt2(200., 240.), 10., pt2(20., 26.)),
+            mover: Body::new(pt2(200., 240.), 10., pt2(20., 26.)),
             noise: Perlin::new(),
             frames: 0,
         }

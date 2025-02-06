@@ -5,7 +5,7 @@ use nannou::Draw;
 use nannou::Event;
 use nature_of_code::utils::gravity::Gravity;
 use nature_of_code::utils::liquid::Liquid;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 use rand::{thread_rng, Rng};
 use std::array;
@@ -15,7 +15,7 @@ pub fn run() {
 }
 
 struct State {
-    movers: Vec<Mover>,
+    movers: Vec<Body>,
     liquid: Liquid,
     mouse_pressed: bool,
 }
@@ -24,7 +24,7 @@ impl ExerciseState for State {
     fn new(exercise: &ExerciseData) -> Self {
         State {
             movers: array::from_fn::<_, 10, _>(|index: usize| {
-                Mover::new_simple(
+                Body::new_simple(
                     pt2(40. + index as f32 * 70., 20.),
                     thread_rng().gen_range(0.5..3.),
                 )
@@ -78,7 +78,7 @@ impl ExerciseState for State {
     }
 }
 
-fn step_mover(liquid: &Liquid, mover: &mut Mover, exercise: &ExerciseData) {
+fn step_mover(liquid: &Liquid, mover: &mut Body, exercise: &ExerciseData) {
     if liquid.contains(mover) {
         liquid.apply_drag_to(mover)
     }

@@ -1,10 +1,10 @@
-use super::mover::Mover;
+use super::body::Body;
 use nannou::prelude::Pow;
 
 pub struct GravitationalAttraction;
 
 impl GravitationalAttraction {
-    pub fn apply_to(self, mover: &mut Mover, attractor: &Mover) {
+    pub fn apply_to(self, mover: &mut Body, attractor: &Body) {
         let mover_mass = mover.mass;
         let attractor_mass = attractor.mass;
         let distance = (mover.position - attractor.position).length().clamp(5.,25.);

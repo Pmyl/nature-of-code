@@ -1,7 +1,7 @@
 use nannou::color::BLACK;
 use nannou::geom::pt2;
 use nannou::Draw;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -9,15 +9,15 @@ pub fn run() {
 }
 
 struct State {
-    movers: Vec<Mover>,
+    movers: Vec<Body>,
 }
 
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
             movers: vec![
-                Mover::new_simple(pt2(100., 30.), 10.),
-                Mover::new_simple(pt2(400., 30.), 2.),
+                Body::new_simple(pt2(100., 30.), 10.),
+                Body::new_simple(pt2(400., 30.), 2.),
             ],
         }
     }
@@ -37,7 +37,7 @@ impl ExerciseState for State {
     }
 }
 
-fn step_mover(mover: &mut Mover, exercise: &ExerciseData) {
+fn step_mover(mover: &mut Body, exercise: &ExerciseData) {
     let center = pt2(exercise.width() as f32 / 2., exercise.height() as f32 / 2.);
     let max_force = 0.1;
     let horizontal_force = (center.x - mover.position.x) / center.x * max_force;

@@ -3,7 +3,7 @@ use nannou::event::WindowEvent;
 use nannou::geom::pt2;
 use nannou::Draw;
 use nannou::Event;
-use nature_of_code::utils::mover::Mover;
+use nature_of_code::utils::body::Body;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -11,14 +11,14 @@ pub fn run() {
 }
 
 struct State {
-    mover: Mover,
+    mover: Body,
     mouse_pressed: bool,
 }
 
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
-            mover: Mover::new(pt2(300., 120.), 1., pt2(32., 32.)),
+            mover: Body::new(pt2(300., 120.), 1., pt2(32., 32.)),
             mouse_pressed: false,
         }
     }

@@ -1,7 +1,7 @@
 use nannou::geom::{pt2, Point2};
 
 #[derive(Default)]
-pub struct Mover {
+pub struct Body {
     pub position: Point2,
     pub velocity: Point2,
     pub acceleration: Point2,
@@ -9,9 +9,9 @@ pub struct Mover {
     pub size: Point2,
 }
 
-impl Mover {
+impl Body {
     pub fn new_simple(position: Point2, mass: f32) -> Self {
-        Mover {
+        Body {
             position,
             velocity: Point2::ZERO,
             acceleration: Point2::ZERO,
@@ -20,7 +20,7 @@ impl Mover {
         }
     }
     pub fn new(position: Point2, mass: f32, size: Point2) -> Self {
-        Mover {
+        Body {
             position,
             velocity: Point2::ZERO,
             acceleration: Point2::ZERO,
