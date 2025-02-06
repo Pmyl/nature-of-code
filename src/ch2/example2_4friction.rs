@@ -1,6 +1,7 @@
 use nannou::color::BLACK;
+use nannou::event::WindowEvent;
 use nannou::geom::pt2;
-use nannou::Draw;
+use nannou::{Draw, Event};
 use nature_of_code::utils::friction::Friction;
 use nature_of_code::utils::gravity::Gravity;
 use nature_of_code::utils::mover::Mover;
@@ -43,5 +44,23 @@ impl ExerciseState for State {
 
         self.mover.bounce_edges(exercise.size(), 0.9);
         self.mover.update();
+    }
+
+    fn handle_event(&mut self, event: nannou::Event, _exercise: &ExerciseData) {
+        match event {
+            Event::WindowEvent {
+                simple: Some(wevent),
+                ..
+            } => match wevent {
+                WindowEvent::MousePressed(_) => {
+                    self.mouse_pressed = true;
+                }
+                WindowEvent::MouseReleased(_) => {
+                    self.mouse_pressed = false;
+                }
+                _ => {}
+            },
+            _ => {}
+        }
     }
 }
