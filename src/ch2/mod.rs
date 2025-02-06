@@ -5,3 +5,4 @@ pub mod example2_4friction;
 pub mod example2_5drag;
 pub mod exercise2_2helium_balloon;
 pub mod exercise2_3invisible_forces;
+pub mod example2_6attraction;
