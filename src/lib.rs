@@ -2,7 +2,7 @@ pub mod utils;
 
 use std::future;
 
-use nannou::app::{Builder, ViewFn};
+use nannou::app::Builder;
 use nannou::event::Update;
 use nannou::geom::Point2;
 use nannou::prelude::pt2;
@@ -85,27 +85,6 @@ impl ExerciseData {
 
     pub fn size(&self) -> Point2 {
         pt2(self.width as f32, self.height as f32)
-    }
-
-    #[deprecated]
-    pub fn init_with_view<Model: 'static>(&self, app: &App, view: ViewFn<Model>) {
-        let _ = app
-            .new_window()
-            .size(self.width * self.scale, self.height * self.scale)
-            .view(view)
-            .build()
-            .unwrap();
-    }
-
-    #[deprecated]
-    pub fn draw(&self, app: &App) -> Draw {
-        app.draw()
-            .scale_x(self.scale as f32)
-            .scale_y(-(self.scale as f32))
-            .x_y(
-                -(self.width as f32) / (self.scale as f32),
-                -(self.height as f32) / (self.scale as f32),
-            )
     }
 
     pub fn width(&self) -> u32 {
