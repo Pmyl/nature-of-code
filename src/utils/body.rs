@@ -10,6 +10,15 @@ pub struct Body {
 }
 
 impl Body {
+    pub fn new_body(position: Point2, mass: f32) -> Self {
+        Body {
+            position,
+            velocity: Point2::ZERO,
+            acceleration: Point2::ZERO,
+            mass,
+            size: pt2(8., 8.) * mass.sqrt(),
+        }
+    }
     pub fn new_simple(position: Point2, mass: f32) -> Self {
         Body {
             position,

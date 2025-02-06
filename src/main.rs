@@ -2,5 +2,5 @@ pub mod ch0_1;
 pub mod ch2;
 
 fn main() {
-    ch2::example2_6attraction::run();
+    ch2::example2_7twobodies::run();
 }
