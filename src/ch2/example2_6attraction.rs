@@ -17,10 +17,10 @@ struct State {
 impl ExerciseState for State {
     fn new(_: &ExerciseData) -> Self {
         State {
-            movers: [Mover::new_simple(pt2(320., 80.), 3.)]
+            movers: [Mover::new_simple(pt2(320., 80.), 1.)]
                 .into_iter()
                 .collect::<Vec<_>>(),
-            attractor: Mover::new_simple(pt2(320., 120.), 5.),
+            attractor: Mover::new_simple(pt2(320., 120.), 3.),
         }
     }
 
@@ -36,7 +36,7 @@ impl ExerciseState for State {
             .xy(self.attractor.position);
     }
 
-    fn step(&mut self, exercise: &ExerciseData) {
+    fn step(&mut self, _: &ExerciseData) {
         for mover in self.movers.iter_mut() {
             let mover_mass = mover.mass;
             let attractor_mass = self.attractor.mass;
@@ -47,7 +47,6 @@ impl ExerciseState for State {
 
             mover.apply_force(force);
             mover.update();
-            mover.bounce_edges(exercise.size(), 0.1);
         }
     }
 }
