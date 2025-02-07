@@ -1,7 +1,7 @@
 use nannou::color::BLACK;
-use nannou::event::WindowEvent;
 use nannou::geom::{pt2, Point2};
 use nannou::{Draw, Event};
+use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -48,20 +48,8 @@ impl ExerciseState for State {
     }
 
     fn handle_event(&mut self, event: Event, exercise: &ExerciseData) {
-        match event {
-            Event::WindowEvent {
-                simple: Some(wevent),
-                ..
-            } => match wevent {
-                WindowEvent::MouseMoved(mouse) => {
-                    self.mouse_position = pt2(
-                        mouse.x / exercise.scale() as f32 + (exercise.width() / 2) as f32,
-                        -mouse.y / exercise.scale() as f32 + (exercise.height() / 2) as f32,
-                    )
-                }
-                _ => {}
-            },
-            _ => {}
+        if let Some(pos) = event.get_position(exercise) {
+            self.mouse_position = pos;
         }
     }
 }

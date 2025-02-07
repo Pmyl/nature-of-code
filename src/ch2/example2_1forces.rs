@@ -1,9 +1,9 @@
 use nannou::color::BLACK;
-use nannou::event::WindowEvent;
 use nannou::geom::pt2;
 use nannou::Draw;
 use nannou::Event;
 use nature_of_code::utils::body::Body;
+use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -48,20 +48,8 @@ impl ExerciseState for State {
     }
 
     fn handle_event(&mut self, event: Event, _exercise: &ExerciseData) {
-        match event {
-            Event::WindowEvent {
-                simple: Some(wevent),
-                ..
-            } => match wevent {
-                WindowEvent::MousePressed(_) => {
-                    self.mouse_pressed = true;
-                }
-                WindowEvent::MouseReleased(_) => {
-                    self.mouse_pressed = false;
-                }
-                _ => {}
-            },
-            _ => {}
+        if let Some(pressed) = event.pressed_state_changed() {
+            self.mouse_pressed = pressed;
         }
     }
 }

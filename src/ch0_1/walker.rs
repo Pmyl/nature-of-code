@@ -1,7 +1,7 @@
-use nannou::event::WindowEvent;
 use nannou::noise::{NoiseFn, OpenSimplex, Seedable};
 use nannou::prelude::Pow;
 use nannou::{color::WHITE, geom::pt2, rand::random_f32, Draw, Event};
+use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::{map_range, ExerciseData, ExerciseRunner, ExerciseState};
 use rand::{thread_rng, Rng};
 
@@ -51,20 +51,8 @@ impl ExerciseState for Walker {
     }
 
     fn handle_event(&mut self, event: Event, exercise: &ExerciseData) {
-        match event {
-            Event::WindowEvent {
-                simple: Some(wevent),
-                ..
-            } => match wevent {
-                WindowEvent::MouseMoved(mouse) => {
-                    self.context.mouse_position = (
-                        mouse.x / exercise.scale() as f32 + (exercise.width() / 2) as f32,
-                        -mouse.y / exercise.scale() as f32 + (exercise.height() / 2) as f32,
-                    )
-                }
-                _ => {}
-            },
-            _ => {}
+        if let Some(pos) = event.get_position(exercise) {
+            self.context.mouse_position = (pos.x, pos.y);
         }
     }
 }
