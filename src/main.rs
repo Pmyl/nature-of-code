@@ -1,6 +1,7 @@
 pub mod ch0_1;
 pub mod ch2;
+mod ch3;
 
 fn main() {
-    ch2::example2_9nbodies::run();
+    ch3::example3_2forces_angular::run();
 }

@@ -7,6 +7,9 @@ pub struct Body {
     pub acceleration: Point2,
     pub mass: f32,
     pub size: Point2,
+    pub angle: f32,
+    pub angular_velocity: f32,
+    pub angular_acceleration: f32,
 }
 
 impl Body {
@@ -17,6 +20,9 @@ impl Body {
             acceleration: Point2::ZERO,
             mass,
             size: pt2(8., 8.) * mass.sqrt(),
+            angle: 0.,
+            angular_velocity: 0.,
+            angular_acceleration: 0.,
         }
     }
     pub fn new_simple(position: Point2, mass: f32) -> Self {
@@ -26,6 +32,9 @@ impl Body {
             acceleration: Point2::ZERO,
             mass,
             size: pt2(16., 16.) * mass,
+            angle: 0.,
+            angular_velocity: 0.,
+            angular_acceleration: 0.,
         }
     }
     pub fn new(position: Point2, mass: f32, size: Point2) -> Self {
@@ -35,12 +44,19 @@ impl Body {
             acceleration: Point2::ZERO,
             mass,
             size,
+            angle: 0.,
+            angular_velocity: 0.,
+            angular_acceleration: 0.,
         }
     }
     pub fn update(&mut self) {
         self.velocity += self.acceleration;
         self.position += self.velocity;
         self.acceleration = Point2::ZERO;
+
+        self.angular_velocity += self.angular_acceleration;
+        self.angle += self.angular_velocity;
+        self.angular_acceleration = 0.;
     }
 
     pub fn apply_force(&mut self, force: Point2) {
