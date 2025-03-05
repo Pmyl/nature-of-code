@@ -49,6 +49,7 @@ impl Body {
             angular_acceleration: 0.,
         }
     }
+
     pub fn update(&mut self) {
         self.velocity += self.acceleration;
         self.position += self.velocity;
@@ -80,7 +81,7 @@ impl Body {
             self.position.y = size.y - self.size.y / 2.;
         }
 
-        if self.position.x  > size.x - self.size.x / 2. {
+        if self.position.x > size.x - self.size.x / 2. {
             self.velocity.x *= -bounciness;
             self.position.x = size.x - self.size.x / 2.;
         }
@@ -88,19 +89,19 @@ impl Body {
 
     pub fn contact_edges(&mut self, size: Point2) -> bool {
         if self.position.y - self.size.y / 2. < 0. {
-          return true;
+            return true;
         }
 
         if self.position.x - self.size.x / 2. < 0. {
-          return true;
+            return true;
         }
 
         if self.position.y > size.y - self.size.y / 2. {
-          return true;
+            return true;
         }
 
-        if self.position.x  > size.x - self.size.x / 2. {
-          return true;
+        if self.position.x > size.x - self.size.x / 2. {
+            return true;
         }
 
         false
