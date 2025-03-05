@@ -3,5 +3,5 @@ pub mod ch2;
 pub mod ch3;
 
 fn main() {
-    ch3::exercise3_5spiral::run();
+    ch3::example3_5simple_harmonic_1::run();
 }
