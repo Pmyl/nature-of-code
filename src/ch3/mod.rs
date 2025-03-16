@@ -1,3 +1,4 @@
+pub mod example3_10spring;
 pub mod example3_2forces_angular;
 pub mod example3_3direction_motion;
 pub mod example3_5simple_harmonic_1;

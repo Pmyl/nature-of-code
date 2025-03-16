@@ -95,6 +95,18 @@ impl ExerciseData {
         self.height
     }
 
+    pub fn half_width(&self) -> f32 {
+        self.width as f32 / 2.0
+    }
+
+    pub fn half_height(&self) -> f32 {
+        self.height as f32 / 2.0
+    }
+
+    pub fn half_position(&self) -> Point2 {
+        pt2(self.width as f32 / 2.0, self.height as f32 / 2.0)
+    }
+
     pub fn scale(&self) -> u32 {
         self.scale
     }

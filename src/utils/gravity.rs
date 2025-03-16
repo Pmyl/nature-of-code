@@ -1,10 +1,14 @@
+use super::{bob::Bob, body::Body};
 use nannou::geom::Point2;
-use super::body::Body;
 
 pub struct Gravity(pub Point2);
 
 impl Gravity {
-    pub fn apply_to(self, mover: &mut Body) {
-        mover.apply_force(self.0 * mover.mass);
+    pub fn apply_to(self, body: &mut Body) {
+        body.apply_force(self.0 * body.mass);
+    }
+
+    pub fn apply_to_bob(self, bob: &mut Bob) {
+        bob.apply_force(self.0 * bob.mass);
     }
 }

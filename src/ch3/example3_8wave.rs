@@ -14,14 +14,11 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData) -> Self {
         State {
             oscillators: array::from_fn::<_, 30, _>(|i: usize| {
                 let delta_angle = 0.2;
-                Oscillator::new(
-                    pt2(0., i as f32 * delta_angle),
-                    pt2(0., 0.05),
-                )
+                Oscillator::new(pt2(0., i as f32 * delta_angle), pt2(0., 0.05))
             })
             .into_iter()
             .collect::<Vec<_>>(),
