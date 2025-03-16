@@ -7,3 +7,4 @@ pub mod gravity;
 pub mod liquid;
 pub mod oscillator;
 pub mod spring;
+pub mod pendulum;

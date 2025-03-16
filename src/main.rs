@@ -3,5 +3,5 @@ pub mod ch2;
 pub mod ch3;
 
 fn main() {
-    ch3::example3_10spring::run();
+    ch3::example3_11pendulum::run();
 }
