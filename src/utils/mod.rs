@@ -6,5 +6,6 @@ pub mod gravitational_attraction;
 pub mod gravity;
 pub mod liquid;
 pub mod oscillator;
-pub mod spring;
+pub mod particle;
 pub mod pendulum;
+pub mod spring;
