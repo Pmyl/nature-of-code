@@ -34,8 +34,8 @@ fn view<TState: ExerciseState>(app: &App, data: &ExerciseDataWrapper<TState>, fr
         .scale_x(data.exercise.scale as f32)
         .scale_y(-(data.exercise.scale as f32))
         .x_y(
-            -(data.exercise.width as f32) / (data.exercise.scale as f32),
-            -(data.exercise.height as f32) / (data.exercise.scale as f32),
+            -(data.exercise.width as f32) / 2.0,
+            -(data.exercise.height as f32) / 2.0,
         );
     data.state.show(&draw, &data.exercise);
     draw.to_frame(app, &frame).unwrap()
@@ -56,7 +56,7 @@ impl ExerciseRunner {
         Builder::new_async(move |app| {
             let _ = app
                 .new_window()
-                .size(width * scale, height * scale)
+                .size((width as f32 * scale) as u32, (height as f32 * scale) as u32)
                 .view(view::<TState>)
                 .build()
                 .unwrap();
@@ -71,15 +71,15 @@ impl ExerciseRunner {
 pub struct ExerciseData {
     width: u32,
     height: u32,
-    scale: u32,
+    scale: f32,
 }
 
 impl ExerciseData {
-    pub const fn new(width: u32, height: u32, scale: u32) -> Self {
+    pub fn new(width: u32, height: u32, scale: impl Into<f64>) -> Self {
         Self {
             width,
             height,
-            scale,
+            scale: Into::<f64>::into(scale) as f32,
         }
     }
 
@@ -107,7 +107,7 @@ impl ExerciseData {
         pt2(self.width as f32 / 2.0, self.height as f32 / 2.0)
     }
 
-    pub fn scale(&self) -> u32 {
+    pub fn scale(&self) -> f32 {
         self.scale
     }
 }

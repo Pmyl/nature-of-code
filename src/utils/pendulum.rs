@@ -23,6 +23,7 @@ impl Pendulum {
             damping: 0.995,
         }
     }
+
     pub fn update(&mut self) {
         let gravity = 0.4;
         self.angular_acceleration = -1.0 * gravity * self.angle.sin() / self.r;
