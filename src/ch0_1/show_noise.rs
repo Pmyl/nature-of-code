@@ -18,8 +18,8 @@ struct State {
 impl ExerciseState for State {
     fn new(exercise: &ExerciseData) -> Self {
         State {
-            width: exercise.width(),
-            height: exercise.height(),
+            width: exercise.width() as u32,
+            height: exercise.height() as u32,
             noise: Perlin::new(),
             frames: 0,
         }

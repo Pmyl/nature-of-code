@@ -29,21 +29,15 @@ fn update<TState: ExerciseState>(
 }
 
 fn view<TState: ExerciseState>(app: &App, data: &ExerciseDataWrapper<TState>, frame: Frame) {
-    let draw = app
-        .draw()
-        .scale_x(data.exercise.scale as f32)
-        .scale_y(-(data.exercise.scale as f32))
-        .x_y(
-            -(data.exercise.width as f32) / 2.0,
-            -(data.exercise.height as f32) / 2.0,
-        );
-    data.state.show(&draw, &data.exercise);
-    draw.to_frame(app, &frame).unwrap()
+    data.draw.reset();
+    data.state.show(&data.draw, &data.exercise);
+    data.draw.to_frame(app, &frame).unwrap()
 }
 
 pub struct ExerciseDataWrapper<TState> {
     state: TState,
     exercise: ExerciseData,
+    draw: Draw,
 }
 pub struct ExerciseRunner;
 
@@ -56,11 +50,19 @@ impl ExerciseRunner {
         Builder::new_async(move |app| {
             let _ = app
                 .new_window()
-                .size((width as f32 * scale) as u32, (height as f32 * scale) as u32)
+                .size((width * scale) as u32, (height * scale) as u32)
                 .view(view::<TState>)
                 .build()
                 .unwrap();
-            Box::new(future::ready(ExerciseDataWrapper { state, exercise }))
+            let draw = Draw::new()
+                .scale_x(scale)
+                .scale_y(-scale)
+                .x_y(-width / 2.0, -height / 2.0);
+            Box::new(future::ready(ExerciseDataWrapper {
+                state,
+                exercise,
+                draw,
+            }))
         })
         .update(update)
         .event(event)
@@ -69,42 +71,46 @@ impl ExerciseRunner {
 }
 
 pub struct ExerciseData {
-    width: u32,
-    height: u32,
+    width: f32,
+    height: f32,
+    half_width: f32,
+    half_height: f32,
     scale: f32,
 }
 
 impl ExerciseData {
     pub fn new(width: u32, height: u32, scale: impl Into<f64>) -> Self {
         Self {
-            width,
-            height,
+            width: width as f32,
+            height: height as f32,
+            half_width: width as f32 / 2.0,
+            half_height: height as f32 / 2.0,
             scale: Into::<f64>::into(scale) as f32,
         }
     }
 
     pub fn size(&self) -> Point2 {
-        pt2(self.width as f32, self.height as f32)
+        pt2(self.width, self.height)
     }
 
-    pub fn width(&self) -> u32 {
+    pub fn width(&self) -> f32 {
         self.width
     }
 
-    pub fn height(&self) -> u32 {
+    pub fn height(&self) -> f32 {
         self.height
     }
 
     pub fn half_width(&self) -> f32 {
-        self.width as f32 / 2.0
+        self.half_width
     }
 
     pub fn half_height(&self) -> f32 {
-        self.height as f32 / 2.0
+        self.half_height
     }
 
     pub fn half_position(&self) -> Point2 {
-        pt2(self.width as f32 / 2.0, self.height as f32 / 2.0)
+        pt2(self.half_width, self.half_height)
     }
 
     pub fn scale(&self) -> f32 {

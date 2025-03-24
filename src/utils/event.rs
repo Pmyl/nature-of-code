@@ -19,8 +19,8 @@ impl MouseEvent for Event {
                 ..
             } => match wevent {
                 WindowEvent::MouseMoved(mouse) => Some(pt2(
-                    mouse.x / exercise.scale() as f32 + (exercise.width() / 2) as f32,
-                    -mouse.y / exercise.scale() as f32 + (exercise.height() / 2) as f32,
+                    mouse.x / exercise.scale() + exercise.half_width(),
+                    -mouse.y / exercise.scale() + exercise.half_height(),
                 )),
                 _ => None,
             },
