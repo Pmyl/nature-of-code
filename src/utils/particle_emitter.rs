@@ -15,7 +15,7 @@ impl ParticleEmitter {
             origin,
             particles: vec![],
             forces: vec![],
-            particles_left: None
+            particles_left: None,
         }
     }
 
@@ -24,18 +24,12 @@ impl ParticleEmitter {
     }
 
     pub fn add_particle(&mut self) -> Option<&mut Particle> {
-        if let Some(left) = self.particles_left.as_mut() {
-            if *left > 0 {
-                *left = *left - 1;
-                self.particles.push(Particle::new(self.origin, 100.0));
-                return Some(self.particles.last_mut().unwrap());
-            }
-
-            return None;
+        if self.consume_particle() {
+            self.particles.push(Particle::new(self.origin, 100.0));
+            Some(self.particles.last_mut().unwrap())
+        } else {
+            None
         }
-
-        self.particles.push(Particle::new(self.origin, 100.0));
-        Some(self.particles.last_mut().unwrap())
     }
 
     pub fn update_with_forces(&mut self) {
@@ -50,6 +44,17 @@ impl ParticleEmitter {
             if particle.is_dead() {
                 self.particles.remove(i);
             }
+        }
+    }
+
+    fn consume_particle(&mut self) -> bool {
+        match self.particles_left.as_mut() {
+            Some(left) if *left > 0 => {
+                *left = *left - 1;
+                true
+            }
+            Some(_) => false,
+            None => true,
         }
     }
 }
