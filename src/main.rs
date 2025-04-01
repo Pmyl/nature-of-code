@@ -4,5 +4,5 @@ pub mod ch3;
 pub mod ch4;
 
 fn main() {
-    ch4::example4_2array_particles::run();
+    ch4::exercise4_3emitter_moves::run();
 }

@@ -7,5 +7,6 @@ pub mod gravity;
 pub mod liquid;
 pub mod oscillator;
 pub mod particle;
+pub mod particle_emitter;
 pub mod pendulum;
 pub mod spring;
