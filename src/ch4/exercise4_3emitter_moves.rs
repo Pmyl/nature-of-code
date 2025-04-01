@@ -47,11 +47,12 @@ impl ExerciseState for State {
     }
 
     fn step(&mut self, _: &ExerciseData) {
-        let particle = self.emitter.add_particle();
-        particle.velocity = pt2(
-            thread_rng().gen_range(-1.0..1.0),
-            thread_rng().gen_range(-1.0..0.0),
-        );
+        if let Some(particle) = self.emitter.add_particle() {
+            particle.velocity = pt2(
+                thread_rng().gen_range(-1.0..1.0),
+                thread_rng().gen_range(-1.0..0.0),
+            );
+        }
 
         self.emitter.origin = self.mouse_position;
         self.emitter.update_with_forces();
