@@ -4,5 +4,5 @@ pub mod ch3;
 pub mod ch4;
 
 fn main() {
-    ch4::exercise4_5emitters_life::run();
+    ch4::example4_7repeller::run();
 }

@@ -1,6 +1,6 @@
-use nannou::geom::Point2;
-
 use super::particle::Particle;
+use crate::utils::particle_force::ParticleForce;
+use nannou::geom::Point2;
 
 pub struct ParticleEmitter {
     pub origin: Point2,
@@ -32,13 +32,31 @@ impl ParticleEmitter {
         }
     }
 
+    pub fn apply_force(&mut self, force: &impl ParticleForce) {
+        for i in (0..self.particles.len()).rev() {
+            let particle = self.particles.get_mut(i).unwrap();
+
+            particle.apply_force(force);
+        }
+    }
+
+    pub fn update(&mut self) {
+        for i in (0..self.particles.len()).rev() {
+            let particle = self.particles.get_mut(i).unwrap();
+            particle.update();
+
+            if particle.is_dead() {
+                self.particles.remove(i);
+            }
+        }
+    }
     pub fn update_with_forces(&mut self) {
         for i in (0..self.particles.len()).rev() {
             let particle = self.particles.get_mut(i).unwrap();
             particle.update();
 
             for force in self.forces.iter().copied() {
-                particle.apply_force(force);
+                particle.apply_force(&force);
             }
 
             if particle.is_dead() {

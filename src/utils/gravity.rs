@@ -1,5 +1,6 @@
 use super::{bob::Bob, body::Body, particle::Particle};
 use nannou::geom::Point2;
+use crate::utils::particle_force::ParticleForce;
 
 pub struct Gravity(pub Point2);
 
@@ -13,6 +14,12 @@ impl Gravity {
     }
 
     pub fn apply_to_particle(&self, particle: &mut Particle) {
-        particle.apply_force(self.0);
+        particle.apply_force(&self.0);
+    }
+}
+
+impl ParticleForce for Gravity {
+    fn apply_force_to(&self, p: &mut Particle) {
+        p.apply_force_internal(self.0)
     }
 }

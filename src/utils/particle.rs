@@ -1,3 +1,4 @@
+use crate::utils::particle_force::ParticleForce;
 use nannou::geom::Point2;
 
 pub struct Particle {
@@ -28,8 +29,12 @@ impl Particle {
         self.remaining_life -= 1.0;
     }
 
-    pub fn apply_force(&mut self, force: Point2) {
+    pub(super) fn apply_force_internal(&mut self, force: Point2) {
         self.acceleration += force;
+    }
+
+    pub fn apply_force(&mut self, force: &impl ParticleForce) {
+        force.apply_force_to(self)
     }
 
     pub fn is_dead(&self) -> bool {

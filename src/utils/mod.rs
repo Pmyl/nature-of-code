@@ -10,3 +10,5 @@ pub mod particle;
 pub mod particle_emitter;
 pub mod pendulum;
 pub mod spring;
+pub mod particle_force;
+pub mod repeller;
