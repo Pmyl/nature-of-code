@@ -1,5 +1,6 @@
 use nannou::noise::{NoiseFn, OpenSimplex, Seedable};
 use nannou::prelude::Pow;
+use nannou::App;
 use nannou::{color::WHITE, geom::pt2, rand::random_f32, Draw, Event};
 use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::{map_range, ExerciseData, ExerciseRunner, ExerciseState};
@@ -21,7 +22,7 @@ struct Context {
 }
 
 impl ExerciseState for Walker {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(exercise: &ExerciseData, _: &App) -> Self {
         Self {
             step_strategy: Box::new(NoiseWalkerStrategy {
                 noise: OpenSimplex::new().set_seed(987654),

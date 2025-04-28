@@ -1,5 +1,6 @@
 use nannou::color::{Rgba, BLACK};
 use nannou::geom::{pt2, Point2};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::utils::particle_emitter::ParticleEmitter;
@@ -17,7 +18,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             emitters: vec![],
             mouse_clicked: false,

@@ -1,6 +1,6 @@
 use nannou::color::BLACK;
 use nannou::geom::{pt2, Point2};
-use nannou::{Draw, Event};
+use nannou::{App, Draw, Event};
 use nature_of_code::utils::event::MouseEvent;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
@@ -16,7 +16,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             position: pt2(100., 100.),
             velocity: pt2(2.5, 2.),

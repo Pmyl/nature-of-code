@@ -1,6 +1,7 @@
 use nannou::color::Rgba;
 use nannou::geom::pt2;
 use nannou::noise::{NoiseFn, Perlin};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::{map_range, ExerciseData, ExerciseRunner, ExerciseState};
 
@@ -16,7 +17,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(exercise: &ExerciseData, _: &App) -> Self {
         State {
             width: exercise.width() as u32,
             height: exercise.height() as u32,

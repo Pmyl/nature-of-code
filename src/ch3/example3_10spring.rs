@@ -1,5 +1,6 @@
 use nannou::color::{BLACK, WHITE};
 use nannou::geom::{pt2, Point2};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::bob::Bob;
 use nature_of_code::utils::event::MouseEvent;
@@ -19,7 +20,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(exercise: &ExerciseData, _: &App) -> Self {
         State {
             mouse_position: Point2::ZERO,
             mouse_pressed: false,

@@ -1,6 +1,7 @@
 use nannou::color::BLACK;
 use nannou::geom::{pt2, Point2, Vec3};
 use nannou::math::Vec2Angle;
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::body::Body;
 use nature_of_code::utils::event::MouseEvent;
@@ -16,7 +17,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             body: Body::new_body(pt2(320., 120.), 10.),
             mouse: Body::new_simple(Point2::ZERO, 10.),

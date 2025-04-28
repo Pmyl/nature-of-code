@@ -2,6 +2,7 @@ use std::f32::consts::PI;
 
 use nannou::color::{BLACK, WHITE};
 use nannou::geom::{pt2, pt3, Point2};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
@@ -15,7 +16,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State { frame: 0, x: 0.0 }
     }
 

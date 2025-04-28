@@ -2,6 +2,7 @@ use std::array;
 
 use nannou::color::{BLACK, WHITE};
 use nannou::geom::{pt2, pt3, Point2};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::oscillator::Oscillator;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
@@ -16,7 +17,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise: &ExerciseData) -> Self {
+    fn new(exercise: &ExerciseData, _: &App) -> Self {
         State {
             oscillators: array::from_fn::<_, 10, _>(|_: usize| {
                 (

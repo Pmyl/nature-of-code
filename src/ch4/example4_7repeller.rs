@@ -1,11 +1,12 @@
 use nannou::color::{Rgba, BLACK};
 use nannou::geom::{pt2, Point2};
+use nannou::App;
 use nannou::Draw;
+use nature_of_code::utils::gravity::Gravity;
 use nature_of_code::utils::particle_emitter::ParticleEmitter;
 use nature_of_code::utils::repeller::Repeller;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 use rand::{thread_rng, Rng};
-use nature_of_code::utils::gravity::Gravity;
 
 pub fn run() {
     ExerciseRunner::run::<State>(ExerciseData::new(640, 240, 2));
@@ -17,10 +18,13 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise_data: &ExerciseData) -> Self {
+    fn new(exercise_data: &ExerciseData, _: &App) -> Self {
         State {
             emitter: ParticleEmitter::new(pt2(exercise_data.half_width(), 20.)),
-            repeller: Repeller { power: 100., position: pt2(exercise_data.half_width(), 200.) },
+            repeller: Repeller {
+                power: 100.,
+                position: pt2(exercise_data.half_width(), 200.),
+            },
         }
     }
 

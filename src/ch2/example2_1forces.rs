@@ -1,5 +1,6 @@
 use nannou::color::BLACK;
 use nannou::geom::pt2;
+use nannou::App;
 use nannou::Draw;
 use nannou::Event;
 use nature_of_code::utils::body::Body;
@@ -16,7 +17,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             mover: Body::new(pt2(300., 120.), 1., pt2(32., 32.)),
             mouse_pressed: false,

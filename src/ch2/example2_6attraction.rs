@@ -1,8 +1,9 @@
 use nannou::color::BLACK;
 use nannou::geom::pt2;
+use nannou::App;
 use nannou::Draw;
-use nature_of_code::utils::gravitational_attraction::GravitationalAttraction;
 use nature_of_code::utils::body::Body;
+use nature_of_code::utils::gravitational_attraction::GravitationalAttraction;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -15,13 +16,11 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         let mut mover = Body::new_simple(pt2(300., 50.), 2.);
         mover.velocity = pt2(1., 0.);
         State {
-            movers: [mover]
-                .into_iter()
-                .collect::<Vec<_>>(),
+            movers: [mover].into_iter().collect::<Vec<_>>(),
             attractor: Body::new(pt2(320., 120.), 20., pt2(40., 40.)),
         }
     }

@@ -1,3 +1,4 @@
+use nannou::App;
 use nannou::{
     color::{BLACK, GRAY, WHITE},
     rand::random_f32,
@@ -16,7 +17,7 @@ struct Distribution {
 }
 
 impl ExerciseState for Distribution {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         Distribution {
             total: 20,
             random_counts: (0..20).map(|_| 0).collect::<Vec<u32>>(),

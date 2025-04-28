@@ -4,5 +4,5 @@ pub mod ch3;
 pub mod ch4;
 
 fn main() {
-    ch4::example4_7repeller::run();
+    ch4::example4_8texture::run();
 }

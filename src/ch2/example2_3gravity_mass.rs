@@ -1,5 +1,6 @@
 use nannou::color::BLACK;
 use nannou::geom::pt2;
+use nannou::App;
 use nannou::Draw;
 use nannou::Event;
 use nature_of_code::utils::body::Body;
@@ -18,7 +19,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             mover1: Body::new_simple(pt2(100., 30.), 10.),
             mover2: Body::new_simple(pt2(400., 30.), 2.),

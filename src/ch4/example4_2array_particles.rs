@@ -1,5 +1,6 @@
 use nannou::color::{Rgba, BLACK};
 use nannou::geom::{pt2, Point2};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::gravity::Gravity;
 use nature_of_code::utils::particle::Particle;
@@ -16,7 +17,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(_: &ExerciseData) -> Self {
+    fn new(_: &ExerciseData, _: &App) -> Self {
         State {
             gravity: Gravity(pt2(0.0, 0.05)),
             particles: vec![],

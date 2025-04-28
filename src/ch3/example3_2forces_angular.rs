@@ -1,5 +1,6 @@
 use nannou::color::{BLACK, STEELBLUE};
 use nannou::geom::{pt2, Point2, Vec3};
+use nannou::App;
 use nannou::Draw;
 use nature_of_code::utils::body::Body;
 use nature_of_code::utils::gravitational_attraction::GravitationalAttraction;
@@ -17,7 +18,7 @@ struct State {
 }
 
 impl ExerciseState for State {
-    fn new(exercise_data: &ExerciseData) -> Self {
+    fn new(exercise_data: &ExerciseData, _: &App) -> Self {
         State {
             bodies: array::from_fn::<_, 10, _>(|_: usize| {
                 let mut body = Body::new_body(

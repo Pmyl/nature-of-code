@@ -10,7 +10,7 @@ use nannou::{App, Draw};
 use nannou::{Event, Frame};
 
 pub trait ExerciseState: 'static {
-    fn new(exercise: &ExerciseData) -> Self;
+    fn new(exercise: &ExerciseData, app: &App) -> Self;
     fn handle_event(&mut self, _event: Event, _exercise: &ExerciseData) {}
     fn show(&self, draw: &Draw, exercise: &ExerciseData);
     fn step(&mut self, exercise: &ExerciseData);
@@ -43,7 +43,6 @@ pub struct ExerciseRunner;
 
 impl ExerciseRunner {
     pub fn run<TState: ExerciseState>(exercise: ExerciseData) {
-        let state = TState::new(&exercise);
         let width = exercise.width;
         let height = exercise.height;
         let scale = exercise.scale;
@@ -54,6 +53,8 @@ impl ExerciseRunner {
                 .view(view::<TState>)
                 .build()
                 .unwrap();
+            let state = TState::new(&exercise, &app);
+
             let draw = Draw::new()
                 .scale_x(scale)
                 .scale_y(-scale)
