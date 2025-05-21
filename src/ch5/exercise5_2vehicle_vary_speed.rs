@@ -63,10 +63,15 @@ impl ExerciseState for State {
 
         let points = vec![pt2(0.0, -4.0), pt2(10.0, 0.0), pt2(0.0, 4.0)].center_polygon();
 
+        let vehicle_direction = if self.sand.contains_position(self.vehicle.position) {
+            self.vehicle.desired_direction
+        } else {
+            self.vehicle.velocity
+        };
         draw.polygon()
             .points(points)
             .xy(self.vehicle.position)
-            .rotate(self.vehicle.velocity.y.atan2(self.vehicle.velocity.x));
+            .rotate(vehicle_direction.y.atan2(vehicle_direction.x));
     }
 
     fn step(&mut self, _: &ExerciseData) {

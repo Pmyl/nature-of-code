@@ -7,6 +7,7 @@ pub struct Vehicle {
     pub acceleration: Point2,
     pub max_speed: f32,
     pub max_force: f32,
+    pub desired_direction: Point2,
 }
 
 impl Vehicle {
@@ -24,6 +25,7 @@ impl Vehicle {
     pub fn seek(&mut self, target: Point2) {
         let mut desired = target - self.position;
         desired = desired.normalize() * self.max_speed;
+        self.desired_direction = desired;
 
         let mut steer = desired - self.velocity;
         steer = steer.normalize() * self.max_force;
