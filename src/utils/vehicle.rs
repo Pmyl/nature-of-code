@@ -31,6 +31,16 @@ impl Vehicle {
         self.apply_force(steer);
     }
 
+    pub fn flee(&mut self, target: Point2) {
+        let mut desired = target - self.position;
+        desired = desired.normalize() * self.max_speed;
+
+        let mut steer = desired - self.velocity;
+        steer = steer.normalize() * self.max_force;
+
+        self.apply_force(steer * -1.);
+    }
+
     pub fn apply_force(&mut self, force: Point2) {
         self.acceleration += force;
     }

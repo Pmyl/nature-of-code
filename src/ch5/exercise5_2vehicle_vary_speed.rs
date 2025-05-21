@@ -1,4 +1,4 @@
-use nannou::color::{BLACK, BLUE, BROWN, LIGHTBLUE, LIGHTYELLOW};
+use nannou::color::{BLACK, BLUE, BROWN};
 use nannou::geom::pt2;
 use nannou::geom::Point2;
 use nannou::App;
@@ -17,7 +17,7 @@ struct State {
     vehicle: Vehicle,
     water: Liquid,
     sand: Liquid,
-    mouse_position: Point2
+    mouse_position: Point2,
 }
 
 impl ExerciseState for State {
@@ -33,13 +33,13 @@ impl ExerciseState for State {
             water: Liquid {
                 position: pt2(200., 0.),
                 size: pt2(100., 240.),
-                coefficient: 0.
+                coefficient: 0.,
             },
             sand: Liquid {
                 position: pt2(400., 0.),
                 size: pt2(240., 240.),
-                coefficient: 0.
-            }
+                coefficient: 0.,
+            },
         }
     }
 
@@ -70,16 +70,14 @@ impl ExerciseState for State {
     }
 
     fn step(&mut self, _: &ExerciseData) {
-
         if self.water.contains_position(self.vehicle.position) {
             self.vehicle.max_speed = 0.5;
+            self.vehicle.max_force = 0.01;
+        } else if self.sand.contains_position(self.vehicle.position) {
+            self.vehicle.max_speed = 2.0;
+            self.vehicle.max_force = 0.03;
         } else {
             self.vehicle.max_speed = 2.0;
-        }
-
-        if self.sand.contains_position(self.vehicle.position) {
-            self.vehicle.max_force = 0.05;
-        } else {
             self.vehicle.max_force = 0.1;
         }
 
