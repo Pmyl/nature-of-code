@@ -10,8 +10,11 @@ pub struct Liquid {
 
 impl Liquid {
     pub fn contains(&self, mover: &Body) -> bool {
+        self.contains_position(mover.position)
+    }
+
+    pub fn contains_position(&self, mpos: Point2) -> bool {
         let pos = &self.position;
-        let mpos = &mover.position;
 
         mpos.x > pos.x && mpos.x < pos.x + self.size.x
             && mpos.y > pos.y && mpos.y < pos.y + self.size.y
