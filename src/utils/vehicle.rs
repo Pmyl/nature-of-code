@@ -1,5 +1,7 @@
 use nannou::geom::{pt2, Point2};
 
+use crate::map_range;
+
 #[derive(Default)]
 pub struct Vehicle {
     pub position: Point2,
@@ -28,7 +30,26 @@ impl Vehicle {
         self.desired_direction = desired;
 
         let mut steer = desired - self.velocity;
-        steer = steer.normalize() * self.max_force;
+        steer = steer.clamp_length_max(self.max_force);
+
+        self.apply_force(steer);
+    }
+
+    pub fn arrive(&mut self, target: Point2) {
+        let mut desired = target - self.position;
+        let distance = desired.length();
+        let r = 100.;
+        let magnitude = if distance < r {
+            map_range(distance, (0., r), (0., self.max_speed))
+        } else {
+            self.max_speed
+        };
+
+        desired = desired.normalize() * magnitude;
+        self.desired_direction = desired;
+
+        let mut steer = desired - self.velocity;
+        steer = steer.clamp_length_max(self.max_force);
 
         self.apply_force(steer);
     }

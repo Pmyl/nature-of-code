@@ -5,5 +5,5 @@ pub mod ch4;
 pub mod ch5;
 
 fn main() {
-    ch5::exercise5_2vehicle_vary_speed::run();
+    ch5::example5_2arrive::run();
 }
