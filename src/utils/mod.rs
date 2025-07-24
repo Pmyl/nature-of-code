@@ -14,3 +14,4 @@ pub mod point;
 pub mod repeller;
 pub mod spring;
 pub mod vehicle;
+pub mod flow_field;
