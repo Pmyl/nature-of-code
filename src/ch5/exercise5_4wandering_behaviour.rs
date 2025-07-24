@@ -1,13 +1,13 @@
 use nannou::color::{BLACK, BLUE};
 use nannou::geom::pt2;
-use nannou::App;
-use nannou::Draw;
 use nannou::math::Vec2Angle;
 use nannou::prelude::GRAY;
-use rand::{thread_rng, Rng};
+use nannou::App;
+use nannou::Draw;
 use nature_of_code::utils::point::PointExt;
 use nature_of_code::utils::vehicle::Vehicle;
 use nature_of_code::{ExerciseData, ExerciseRunner, ExerciseState};
+use rand::{thread_rng, Rng};
 
 pub fn run() {
     ExerciseRunner::run::<State>(ExerciseData::new(640, 240, 2));
@@ -32,7 +32,7 @@ impl ExerciseState for State {
             },
             r: 30.0,
             theta: 0.,
-            distance: 80.0
+            distance: 80.0,
         }
     }
 
@@ -46,25 +46,16 @@ impl ExerciseState for State {
             .end(center_circle)
             .color(GRAY);
 
-        draw.ellipse()
-            .xy(center_circle)
-            .radius(self.r)
-            .color(GRAY);
+        draw.ellipse().xy(center_circle).radius(self.r).color(GRAY);
 
         let theta_rotated = self.vehicle.velocity.angle() + self.theta;
         let x = self.r * theta_rotated.cos();
         let y = self.r * theta_rotated.sin();
         let target = center_circle + pt2(x, y);
 
-        draw.line()
-            .start(center_circle)
-            .end(target)
-            .color(BLACK);
+        draw.line().start(center_circle).end(target).color(BLACK);
 
-        draw.ellipse()
-            .xy(target)
-            .radius(3.0)
-            .color(BLUE);
+        draw.ellipse().xy(target).radius(3.0).color(BLUE);
 
         draw.polygon()
             .points(vec![pt2(0.0, -4.0), pt2(10.0, 0.0), pt2(0.0, 4.0)].center_polygon())
@@ -73,7 +64,8 @@ impl ExerciseState for State {
     }
 
     fn step(&mut self, exercise_data: &ExerciseData) {
-        let center_circle = self.vehicle.position + self.vehicle.velocity.normalize() * self.distance;
+        let center_circle =
+            self.vehicle.position + self.vehicle.velocity.normalize() * self.distance;
         let theta_rotated = self.vehicle.velocity.angle() + self.theta;
         let x = self.r * theta_rotated.cos();
         let y = self.r * theta_rotated.sin();

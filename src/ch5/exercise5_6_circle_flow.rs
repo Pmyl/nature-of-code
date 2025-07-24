@@ -1,9 +1,10 @@
+use std::f32::consts::PI;
+
+use nannou::color::{Rgba, GREY};
+use nannou::geom::Point2;
 use nannou::prelude::{pt2, BLACK};
 use nannou::App;
-use nannou::color::{Rgba, GREY};
 use nannou::Draw;
-use nannou::geom::Point2;
-use rand::{thread_rng, Rng};
 use nature_of_code::{utils::flow_field::FlowField, ExerciseData, ExerciseRunner, ExerciseState};
 
 pub fn run() {
@@ -22,12 +23,25 @@ impl ExerciseState for State {
                 ex.width() as usize,
                 ex.height() as usize,
                 |cols, rows| {
-                    let mut vec = vec![pt2(1., 0.);cols * rows];
+                    let resolution = 20.0;
+                    let width = ex.width();
+                    let height = ex.height();
+                    let center = pt2(width / 2., height / 2.);
 
-                    for i in 0..cols * rows {
-                        let x = thread_rng().gen_range(-1.0..1.0);
-                        let y = thread_rng().gen_range(-1.0..1.0);
-                        vec[i] = pt2(x, y).normalize();
+                    let mut vec = vec![Point2::ZERO; cols * rows];
+
+                    for col in 0..cols {
+                        for row in 0..rows {
+                            let i = row * cols + col;
+                            let point = pt2(col as f32 * resolution, row as f32 * resolution);
+                            let r = (center - point).length();
+                            let point_adjusted = point - center;
+                            // ROTATE
+                            let angle = point_adjusted.y.atan2(point_adjusted.x) + PI / 2.;
+                            let direction =
+                                pt2(angle.cos() * r, angle.sin() * r).normalize_or_zero();
+                            vec[i] = direction;
+                        }
                     }
 
                     vec
@@ -42,20 +56,26 @@ impl ExerciseState for State {
         for row in 0..self.flow.rows {
             for col in 0..self.flow.cols {
                 let direction = self.flow.field[row * self.flow.cols + col];
-                let position = pt2((col * self.flow.resolution) as f32, (row * self.flow.resolution) as f32);
+                let position = pt2(
+                    (col * self.flow.resolution) as f32,
+                    (row * self.flow.resolution) as f32,
+                );
                 let center = position + self.flow.resolution as f32 / 2.;
                 let start = center - direction * 10. / 2.;
-                draw.rect().xy(position + self.flow.resolution as f32 / 2.)
+                draw.rect()
+                    .xy(position + self.flow.resolution as f32 / 2.)
                     .stroke(GREY)
                     .stroke_weight(1.)
                     .color(Rgba::new(0., 0., 0., 0.))
-                    .wh(pt2(self.flow.resolution as f32, self.flow.resolution as f32));
+                    .wh(pt2(
+                        self.flow.resolution as f32,
+                        self.flow.resolution as f32,
+                    ));
 
                 draw.arrow().start(start).end(start + direction * 10.);
             }
         }
     }
 
-    fn step(&mut self, _: &ExerciseData) {
-    }
+    fn step(&mut self, _: &ExerciseData) {}
 }
